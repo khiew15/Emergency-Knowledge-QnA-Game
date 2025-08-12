@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青岛海信模具有限公司应急知识挑战赛V3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0066B2', // 海信蓝 - 代表专业和可靠
+                        secondary: '#FF6600', // 海信橙 - 警示色
+                        success: '#10B981', // 绿色 - 正确/安全
+                        danger: '#EF4444', // 红色 - 错误/危险
+                        industrial: '#374151', // 工业灰
+                        light: '#F3F4F6' // 浅色背景
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .progress-animation {
+                transition: width 0.5s ease-in-out;
+            }
+            .timer-warning {
+                animation: warning 1s infinite alternate;
+            }
+            @keyframes warning {
+                from { background-color: #FF6600; }
+                to { background-color: #EF4444; }
+            }
+            .rank-1 {
+                background: linear-gradient(135deg, #FFF8DC 0%, #FFD700 100%);
+            }
+            .rank-2 {
+                background: linear-gradient(135deg, #F5F5F5 0%, #C0C0C0 100%);
+            }
+            .rank-3 {
+                background: linear-gradient(135deg, #FFF0F5 0%, #CD7F32 100%);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
+    <!-- 顶部导航栏 -->
+    <header class="bg-primary text-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-shield text-2xl"></i>
+                <h1 class="text-xl md:text-2xl font-bold">青岛海信模具有限公司应急知识挑战赛</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <button id="sound-toggle" class="hover:text-secondary transition-colors">
+                    <i class="fa fa-volume-up"></i>
+                </button>
+                <button id="help-btn" class="hover:text-secondary transition-colors">
+                    <i class="fa fa-question-circle"></i> 帮助
+                </button>
+                <button id="ranking-btn" class="hover:text-secondary transition-colors bg-secondary/20 px-3 py-1 rounded">
+                    <i class="fa fa-trophy"></i> 排行榜
+                </button>
+                <button id="export-records-btn" class="hover:text-secondary transition-colors bg-secondary/20 px-3 py-1 rounded">
+                    <i class="fa fa-download"></i> 导出记录
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主游戏区域 -->
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
+        <!-- 用户信息收集界面 -->
+        <section id="user-info-screen" class="text-center py-10">
+            <div class="bg-white rounded-xl shadow-xl p-8 mb-8">
+                <div class="w-24 h-24 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fa fa-user-circle text-white text-4xl"></i>
+                </div>
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-industrial mb-6">请填写您的信息</h2>
+                
+                <form id="user-info-form" class="space-y-4 max-w-md mx-auto">
+                    <div class="text-left">
+                        <label for="department" class="block text-gray-700 mb-1 font-medium">部门</label>
+                        <input type="text" id="department" name="department" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                            placeholder="请输入您的部门">
+                    </div>
+                    
+                    <div class="text-left">
+                        <label for="employee-id" class="block text-gray-700 mb-1 font-medium">工号</label>
+                        <input type="text" id="employee-id" name="employee-id" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                            placeholder="请输入您的工号">
+                    </div>
+                    
+                    <div class="text-left">
+                        <label for="name" class="block text-gray-700 mb-1 font-medium">姓名</label>
+                        <input type="text" id="name" name="name" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                            placeholder="请输入您的姓名">
+                    </div>
+                    
+                    <button type="submit" class="bg-secondary hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 w-full">
+                        开始挑战 <i class="fa fa-play ml-2"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 游戏开始界面 -->
+        <section id="start-screen" class="text-center py-10 hidden">
+            <div class="bg-white rounded-xl shadow-xl p-8 mb-8">
+                <div class="w-24 h-24 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fa fa-industry text-white text-4xl"></i>
+                </div>
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-industrial mb-4">青岛海信模具有限公司应急知识挑战赛</h2>
+                <p class="text-gray-600 mb-6 max-w-2xl mx-auto">
+                    本游戏将随机抽取塑胶、钣金、模具制造中常见的10个应急场景，测试您的应急处理知识。
+                    请根据场景描述，选择正确的应对措施，提高您的应急处理能力。
+                </p>
+                <div class="flex flex-col md:flex-row justify-center gap-4 mb-8">
+                    <div class="flex items-center bg-blue-50 p-3 rounded-lg">
+                        <i class="fa fa-check-circle text-success mr-2"></i>
+                        <span>共10题，每题10分</span>
+                    </div>
+                    <div class="flex items-center bg-blue-50 p-3 rounded-lg">
+                        <i class="fa fa-clock-o text-primary mr-2"></i>
+                        <span>每题限时30秒</span>
+                    </div>
+                    <div class="flex items-center bg-blue-50 p-3 rounded-lg">
+                        <i class="fa fa-info-circle text-secondary mr-2"></i>
+                        <span>有详细解析</span>
+                    </div>
+                </div>
+                <button id="start-btn" class="bg-secondary hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                    开始挑战 <i class="fa fa-play ml-2"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-5 card-hover">
+                    <div class="text-primary text-3xl mb-3"><i class="fa fa-cogs"></i></div>
+                    <h3 class="font-bold text-lg mb-2">塑胶安全</h3>
+                    <p class="text-gray-600">学习注塑机操作中的应急处理，包括原料处理、设备异常等情况</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-5 card-hover">
+                    <div class="text-secondary text-3xl mb-3"><i class="fa fa-cut"></i></div>
+                    <h3 class="font-bold text-lg mb-2">钣金安全</h3>
+                    <p class="text-gray-600">掌握钣金加工中的剪切、冲压等工序的安全操作与应急处理</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-5 card-hover">
+                    <div class="text-primary text-3xl mb-3"><i class="fa fa-cube"></i></div>
+                    <h3 class="font-bold text-lg mb-2">模具安全</h3>
+                    <p class="text-gray-600">了解模具设计、制造和使用过程中的安全防护与应急措施</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 游戏界面 -->
+        <section id="game-screen" class="hidden">
+            <!-- 进度和分数 -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <span class="text-gray-600">进度：</span>
+                        <span id="progress-text" class="font-bold text-primary">1/10</span>
+                    </div>
+                    <div class="w-full md:w-1/2 mb-4 md:mb-0">
+                        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="h-full bg-primary progress-animation" style="width: 10%"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div>
+                            <span class="text-gray-600">得分：</span>
+                            <span id="score" class="font-bold text-secondary">0</span>
+                        </div>
+                        <div class="flex items-center bg-secondary/10 px-3 py-1 rounded-full">
+                            <i class="fa fa-clock-o text-secondary mr-2"></i>
+                            <span id="question-timer" class="font-bold text-secondary">30</span>
+                            <span class="ml-1">秒</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 题目卡片 -->
+            <div class="bg-white rounded-xl shadow-xl p-6 md:p-8 mb-8">
+                <div class="flex items-center mb-4">
+                    <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                        <i class="fa fa-map-marker mr-1"></i> 领域 <span id="question-type">塑胶制造</span>
+                    </span>
+                </div>
+                <h2 id="question-text" class="text-2xl font-bold text-industrial mb-6">
+                    你正在操作注塑机时，发现模具突然卡住，并有异常声响，此时你应该怎么做？
+                </h2>
+                
+                <!-- 选项列表 -->
+                <div class="space-y-4" id="options-container">
+                    <div class="option card-hover border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-primary transition-colors">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex-shrink-0 mt-0.5 mr-3 flex items-center justify-center option-marker">
+                                <span class="option-letter font-bold">A</span>
+                            </div>
+                            <p>立即用手去查看模具内部，尝试取出卡住的物料</p>
+                        </div>
+                    </div>
+                    
+                    <div class="option card-hover border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-primary transition-colors">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex-shrink-0 mt-0.5 mr-3 flex items-center justify-center option-marker">
+                                <span class="option-letter font-bold">B</span>
+                            </div>
+                            <p>立即按下急停按钮，然后通知班组长和维修人员</p>
+                        </div>
+                    </div>
+                    
+                    <div class="option card-hover border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-primary transition-colors">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex-shrink-0 mt-0.5 mr-3 flex items-center justify-center option-marker">
+                                <span class="option-letter font-bold">C</span>
+                            </div>
+                            <p>继续操作，尝试通过增加压力将卡住的物料压出</p>
+                        </div>
+                    </div>
+                    
+                    <div class="option card-hover border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-primary transition-colors">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex-shrink-0 mt-0.5 mr-3 flex items-center justify-center option-marker">
+                                <span class="option-letter font-bold">D</span>
+                            </div>
+                            <p>关闭电源总开关，等待第二天再处理</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 下一题按钮 (默认隐藏) -->
+            <div id="next-btn-container" class="hidden text-center mb-8">
+                <button id="next-btn" class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-full text-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
+                    下一题 <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+            
+            <!-- 解析区域 (默认隐藏) -->
+            <div id="explanation-container" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold text-primary mb-4 flex items-center">
+                    <i class="fa fa-book mr-2"></i> 知识解析
+                </h3>
+                <div id="explanation-text" class="text-gray-700 leading-relaxed">
+                    当注塑机出现模具卡住并伴有异常声响时，正确的处理步骤是立即按下急停按钮，这能迅速切断设备动力，防止进一步损坏或事故。然后应通知班组长和专业维修人员进行处理，切勿自行用手接触或强行操作设备，以免造成机械伤害。
+                </div>
+                
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <h4 class="font-bold text-secondary mb-2">相关安全规定：</h4>
+                    <p class="text-gray-700 text-sm">根据公司安全操作规程，生产设备操作区域必须配备急停按钮并保证其随时可用，操作人员必须熟悉其位置和使用方法。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 游戏结束界面 -->
+        <section id="end-screen" class="hidden text-center py-8">
+            <div class="bg-white rounded-xl shadow-xl p-8 mb-8">
+                <div id="result-icon" class="w-24 h-24 bg-success rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fa fa-trophy text-white text-4xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-industrial mb-2">挑战完成！</h2>
+                <p class="text-gray-600 mb-6">恭喜您完成了所有应急知识挑战</p>
+                
+                <div class="flex flex-col md:flex-row justify-center items-center gap-6 mb-8 flex-wrap">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-primary mb-1" id="final-score">80</div>
+                        <div class="text-gray-500">总分</div>
+                    </div>
+                    <div class="h-16 w-px bg-gray-300 hidden md:block"></div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-secondary mb-1" id="correct-answers">8</div>
+                        <div class="text-gray-500">正确题数</div>
+                    </div>
+                    <div class="h-16 w-px bg-gray-300 hidden md:block"></div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-industrial mb-1" id="result-rating">良好</div>
+                        <div class="text-gray-500">评级</div>
+                    </div>
+                    <div class="h-16 w-px bg-gray-300 hidden md:block"></div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-primary mb-1" id="total-time">03:25</div>
+                        <div class="text-gray-500">总用时</div>
+                    </div>
+                </div>
+                
+                <div id="result-message" class="bg-blue-50 rounded-lg p-4 mb-8 text-left max-w-2xl mx-auto">
+                    您对制造车间的应急知识有一定了解，但仍有提升空间。建议重点关注化学品泄漏和设备安全方面的知识，这对模具制造企业尤为重要。
+                </div>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button id="restart-btn" class="bg-secondary hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        重新挑战 <i class="fa fa-refresh ml-2"></i>
+                    </button>
+                    <button id="share-btn" class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        分享成绩 <i class="fa fa-share-alt ml-2"></i>
+                    </button>
+                    <button id="view-ranking-btn" class="bg-industrial hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        查看排行榜 <i class="fa fa-trophy ml-2"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 排行榜区域 -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8" id="ranking-container">
+                <h3 class="text-xl font-bold text-primary mb-6 flex items-center">
+                    <i class="fa fa-trophy mr-2"></i> 应急知识挑战赛排行榜
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">排名</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">姓名</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">部门</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">得分</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">用时</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">日期</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ranking-list" class="bg-white divide-y divide-gray-200">
+                            <!-- 排行榜数据将通过JavaScript动态填充 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 知识要点回顾 -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold text-primary mb-4">应急知识要点回顾</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex items-start">
+                        <div class="bg-success/10 p-2 rounded-full text-success mr-3 mt-1">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">机械伤害预防</h4>
+                            <p class="text-gray-600 text-sm">熟悉急停按钮位置，严禁在设备运行时将手伸入危险区域</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-success/10 p-2 rounded-full text-success mr-3 mt-1">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">化学品安全</h4>
+                            <p class="text-gray-600 text-sm">正确佩戴防护用品，了解MSDS，泄漏时正确处理</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-success/10 p-2 rounded-full text-success mr-3 mt-1">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">火灾应对</h4>
+                            <p class="text-gray-600 text-sm">熟悉灭火器位置和使用方法，知道紧急疏散路线</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-success/10 p-2 rounded-full text-success mr-3 mt-1">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">模具安全</h4>
+                            <p class="text-gray-600 text-sm">模具安装和拆卸时必须遵守安全规程，使用合适工具</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 排行榜模态框 (移动端) -->
+    <div id="ranking-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 p-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-primary">应急知识挑战赛排行榜</h3>
+                <button id="close-ranking" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">排名</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">姓名</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">部门</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">得分</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">用时</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modal-ranking-list" class="bg-white divide-y divide-gray-200">
+                        <!-- 排行榜数据将通过JavaScript动态填充 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 帮助模态框 -->
+    <div id="help-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-primary">游戏帮助</h3>
+                <button id="close-help" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="space-y-4 text-gray-700">
+                <div>
+                    <h4 class="font-bold text-industrial mb-1">游戏规则</h4>
+                    <p>本游戏包含50个制造行业应急场景题目，涵盖塑胶、钣金和模具三大领域，每次随机抽取10题，每题有4个选项，只有一个正确答案。</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-industrial mb-1">计时规则</h4>
+                    <p>每题限时30秒，超时未答题将视为错误，自动进入下一题。</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-industrial mb-1">计分方式</h4>
+                    <p>每答对一题得10分，答错不得分，总分100分。排行榜将按得分排序，得分相同则用时短者排名靠前。</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-industrial mb-1">游戏目的</h4>
+                    <p>通过模拟实际场景，帮助您学习制造车间常见应急情况的正确处理方法，提高安全意识。</p>
+                </div>
+            </div>
+            <div class="mt-6">
+                <button id="understand-btn" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                    明白了
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-industrial text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-4">
+                <i class="fa fa-shield text-2xl mb-2"></i>
+                <h3 class="font-bold text-lg">安全生产，人人有责</h3>
+            </div>
+            <p class="text-gray-300 text-sm max-w-md mx-auto">
+                本游戏仅用于应急知识普及教育，具体操作请遵守公司安全规程和国家安全生产相关法规。
+            </p>
+            <div class="mt-4 text-gray-400 text-sm">
+                © 2025 青岛海信模具有限公司
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 存储用户信息
+        let userInfo = {
+            department: '',
+            employeeId: '',
+            name: ''
+        };
+
+        // 游戏记录存储 - 在HTML代码中用变量存储
+        let gameRecords = [];
+        
+        // 初始化游戏记录 - 从HTML存储中加载
+        function initializeGameRecords() {
+            // 检查是否有预存的记录数据
+            const recordElement = document.getElementById('game-records-storage');
+            if (recordElement) {
+                try {
+                    const storedRecords = JSON.parse(recordElement.textContent);
+                    if (Array.isArray(storedRecords)) {
+                        gameRecords = storedRecords;
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Failed to parse stored game records:', e);
+                }
+            }
+            
+            // 如果没有预存记录或解析失败，使用默认记录
+            gameRecords = [
+                { name: "张三", department: "注塑车间", score: 100, time: 125, date: "2025-08-01" },
+                { name: "李四", department: "模具车间", score: 90, time: 150, date: "2025-08-02" },
+                { name: "王五", department: "钣金车间", score: 85, time: 140, date: "2025-08-03" },
+                { name: "赵六", department: "设备部", score: 80, time: 160, date: "2025-08-04" },
+                { name: "钱七", department: "质量部", score: 75, time: 130, date: "2025-08-05" }
+            ];
+            
+            // 保存到HTML存储
+            saveRecordsToHTML();
+        }
+        
+        // 保存记录到HTML存储
+        function saveRecordsToHTML() {
+            let recordElement = document.getElementById('game-records-storage');
+            if (!recordElement) {
+                recordElement = document.createElement('div');
+                recordElement.id = 'game-records-storage';
+                recordElement.style.display = 'none';
+                document.body.appendChild(recordElement);
+            }
+            recordElement.textContent = JSON.stringify(gameRecords);
+        }
+        
+        // 添加新记录
+        function addNewRecord(score, timeInSeconds) {
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+            
+            const newRecord = {
+                name: userInfo.name,
+                department: userInfo.department,
+                employeeId: userInfo.employeeId,
+                score: score,
+                time: timeInSeconds,
+                date: dateStr
+            };
+            
+            gameRecords.push(newRecord);
+            saveRecordsToHTML();
+            updateRanking();
+        }
+
+        // 游戏数据 - 题库（50题），涵盖塑胶、钣金、模具三个领域
+        const questions = [
+            // 塑胶制造类
+            {
+                type: "塑胶制造",
+                text: "你正在操作注塑机时，发现模具突然卡住，并有异常声响，此时你应该怎么做？",
+                options: [
+                    "立即用手去查看模具内部，尝试取出卡住的物料",
+                    "立即按下急停按钮，然后通知班组长和维修人员",
+                    "继续操作，尝试通过增加压力将卡住的物料压出",
+                    "关闭电源总开关，等待第二天再处理"
+                ],
+                correct: 1,
+                explanation: "当注塑机出现模具卡住并伴有异常声响时，正确的处理步骤是立即按下急停按钮，这能迅速切断设备动力，防止进一步损坏或事故。然后应通知班组长和专业维修人员进行处理，切勿自行用手接触或强行操作设备，以免造成机械伤害。",
+                regulation: "根据公司安全操作规程，生产设备操作区域必须配备急停按钮并保证其随时可用，操作人员必须熟悉其位置和使用方法。"
+            },
+            {
+                type: "塑胶制造",
+                text: "在清理注塑机料筒时，以下哪种做法是正确的？",
+                options: [
+                    "在设备运行状态下，用金属工具伸入料筒清理",
+                    "先停机并切断电源，待料筒冷却后再进行清理",
+                    "直接向运行中的料筒喷水降温后再清理",
+                    "不戴防护手套进行清理操作"
+                ],
+                correct: 1,
+                explanation: "清理注塑机料筒时，必须先停机并切断电源，等待料筒充分冷却后再进行操作，以防止高温烫伤和机械伤害。应使用专用工具，并佩戴适当的防护手套。",
+                regulation: "公司安全规定要求，从业人员应当严格遵守本单位的安全生产规章制度和操作规程，服从管理，正确佩戴和使用劳动防护用品。"
+            },
+            {
+                type: "塑胶制造",
+                text: "发现塑胶原料在干燥过程中温度异常升高，超过设定值，应采取什么措施？",
+                options: [
+                    "继续观察，等待温度自行恢复正常",
+                    "立即切断干燥机电源，检查原因",
+                    "向原料中加水降温",
+                    "打开干燥机门散热"
+                ],
+                correct: 1,
+                explanation: "塑胶原料干燥过程中温度异常升高存在火灾风险，应立即切断电源，防止温度继续升高引发火灾。在确保安全的情况下检查温度异常原因，排除故障后方可继续使用。",
+                regulation: "根据公司设备安全管理规定，操作人员发现设备运行参数异常时，应立即停机检查，排除故障后方可继续操作。"
+            },
+            {
+                type: "塑胶制造",
+                text: "在混炼塑胶原料时，不慎吸入粉尘，出现咳嗽症状，应如何处理？",
+                options: [
+                    "继续工作，症状会自行消失",
+                    "立即到通风处休息，如症状持续应就医",
+                    "服用止咳药后继续工作",
+                    "用清水冲洗鼻腔后继续工作"
+                ],
+                correct: 1,
+                explanation: "吸入塑胶粉尘后出现咳嗽症状，应立即停止工作，到通风良好处休息，观察症状变化。如症状持续或加重，应及时就医检查。长期吸入塑胶粉尘可能对呼吸系统造成损害，必须重视。",
+                regulation: "公司职业健康管理规定要求，接触粉尘的操作人员必须佩戴合适的防护用品，出现不适症状应及时报告并就医。"
+            },
+            {
+                type: "塑胶制造",
+                text: "注塑机液压油泄漏，溅到高温的加热筒上引起冒烟，应首先采取什么措施？",
+                options: [
+                    "立即用灭火器灭火",
+                    "立即按下急停按钮，切断电源",
+                    "用沙土覆盖冒烟处",
+                    "用水泼洒降温"
+                ],
+                correct: 1,
+                explanation: "液压油泄漏接触高温表面冒烟时，首先应切断设备电源，防止火势扩大。然后使用适当的灭火器材进行处理。切勿直接用水泼洒，可能导致油火飞溅扩大火势。",
+                regulation: "根据公司消防安全管理规定，操作人员应熟悉设备紧急停止装置的位置和使用方法，以便在紧急情况下迅速采取措施。"
+            },
+            {
+                type: "塑胶制造",
+                text: "在调试新的塑胶配方时，发现成型品出现异常气味，应如何处理？",
+                options: [
+                    "继续生产，可能是新配方的正常现象",
+                    "立即停止生产，通风换气，检查原因",
+                    "加快生产速度，尽快完成批次",
+                    "将成型品放置在密闭容器中"
+                ],
+                correct: 1,
+                explanation: "塑胶成型品出现异常气味可能是原料分解或温度过高导致，可能释放有害气体。应立即停止生产，加强通风，排查异常原因，确保作业环境安全后再继续。",
+                regulation: "公司安全操作规程规定，生产过程中出现异常气味、烟雾等情况时，应立即停机检查，待确认安全后方可继续生产。"
+            },
+            {
+                type: "塑胶制造",
+                text: "以下哪种行为在塑胶车间是被禁止的？",
+                options: [
+                    "操作前检查设备安全防护装置",
+                    "佩戴防护眼镜和手套",
+                    "在设备运行时跨越安全护栏",
+                    "定期清理设备周围的原料和废料"
+                ],
+                correct: 2,
+                explanation: "在设备运行时跨越安全护栏是严重违反安全规定的行为，可能导致人员接触危险区域，造成机械伤害。任何时候都应遵守安全护栏的限制，不得随意跨越。",
+                regulation: "公司安全生产管理规定明确禁止在设备运行时跨越安全防护设施，操作人员必须在安全区域内进行操作。"
+            },
+            {
+                type: "塑胶制造",
+                text: "发现塑胶原料包装袋破损，原料散落，应如何处理？",
+                options: [
+                    "直接用手清理散落的原料",
+                    "佩戴防护手套和口罩，将散落原料收集到专用容器",
+                    "用压缩空气将散落原料吹到角落",
+                    "置之不理，继续生产"
+                ],
+                correct: 1,
+                explanation: "处理散落的塑胶原料时，应佩戴适当的防护用品，防止原料接触皮肤或吸入粉尘。将散落原料收集到专用容器，避免污染环境或造成滑倒风险。",
+                regulation: "根据公司原料管理规定，处理散落原料时必须采取适当的防护措施，并进行妥善收集处理，保持工作区域整洁。"
+            },
+            {
+                type: "塑胶制造",
+                text: "塑胶制品脱模困难时，以下哪种做法是正确的？",
+                options: [
+                    "用金属工具强行撬出制品",
+                    "增加脱模剂用量，等待片刻再尝试",
+                    "用手直接拉出制品",
+                    "提高模具温度后再尝试脱模"
+                ],
+                correct: 1,
+                explanation: "塑胶制品脱模困难时，应先尝试增加适量脱模剂，等待片刻再进行脱模操作。强行撬出可能损坏模具或制品，甚至造成人员伤害。如仍无法顺利脱模，应停机检查原因。",
+                regulation: "公司模具操作规程规定，遇到脱模困难时，严禁使用暴力手段，应采取适当措施或寻求专业人员帮助。"
+            },
+            {
+                type: "塑胶制造",
+                text: "在进行塑胶废料粉碎作业时，以下哪项是必须的安全措施？",
+                options: [
+                    "佩戴耳塞和防护眼镜",
+                    "穿宽松的衣物以便操作",
+                    "作业时可以吸烟",
+                    "无需检查物料中是否有金属杂质"
+                ],
+                correct: 0,
+                explanation: "粉碎作业会产生噪音和物料飞溅，必须佩戴耳塞保护听力，佩戴防护眼镜防止物料进入眼睛。应穿着合身的工作服，禁止吸烟，作业前必须检查物料中是否有金属杂质，防止损坏设备或产生火花。",
+                regulation: "根据公司设备安全操作规程，进行粉碎作业时必须佩戴相应的个人防护用品，并确保物料中无杂质。"
+            },
+            
+            // 钣金制造类
+            {
+                type: "钣金制造",
+                text: "操作剪板机剪切金属板材时，手指应保持在离刀口至少多少距离以上？",
+                options: [
+                    "5厘米",
+                    "10厘米",
+                    "15厘米",
+                    "20厘米"
+                ],
+                correct: 2,
+                explanation: "操作剪板机时，为防止手指被剪切，必须保持手指离刀口至少15厘米以上的距离。当板材较小时，应使用专用工具推送，而不是用手直接操作。",
+                regulation: "公司钣金设备安全操作规程规定，操作剪板机时，手离刀口的安全距离不得小于15厘米，小件剪切必须使用专用工具。"
+            },
+            {
+                type: "钣金制造",
+                text: "在进行钣金打磨作业时，最应佩戴的防护用品是？",
+                options: [
+                    "防护眼镜和防尘口罩",
+                    "绝缘手套和安全鞋",
+                    "耳塞和反光背心",
+                    "安全帽和防护面罩"
+                ],
+                correct: 0,
+                explanation: "钣金打磨作业会产生大量金属粉尘和飞溅物，必须佩戴防护眼镜防止异物进入眼睛，佩戴防尘口罩防止吸入金属粉尘。根据打磨方式和强度，可能还需要其他防护用品。",
+                regulation: "根据公司职业健康安全规定，进行打磨作业时必须佩戴合适的眼部防护和呼吸防护用品，防止职业伤害。"
+            },
+            {
+                type: "钣金制造",
+                text: "发现折弯机的防护装置损坏，应如何处理？",
+                options: [
+                    "继续使用，小心操作即可",
+                    "用胶带临时固定后继续使用",
+                    "立即停止使用，悬挂“禁止使用”标识，报告管理人员",
+                    "自己动手修理后再使用"
+                ],
+                correct: 2,
+                explanation: "折弯机的防护装置是保障操作人员安全的重要设施，损坏后必须立即停止使用，防止发生挤压伤害。应悬挂警示标识并通知管理人员安排专业维修，严禁在防护装置失效的情况下继续操作。",
+                regulation: "公司设备安全管理规定要求，任何安全防护装置损坏的设备必须立即停用，并报告维修，严禁带病运行。"
+            },
+            {
+                type: "钣金制造",
+                text: "在钣金焊接作业中，出现焊枪回火现象，应首先采取什么措施？",
+                options: [
+                    "立即关闭乙炔阀门，再关闭氧气阀门",
+                    "立即关闭氧气阀门，再关闭乙炔阀门",
+                    "将焊枪浸入水中",
+                    "继续焊接，回火会自行消失"
+                ],
+                correct: 0,
+                explanation: "焊接作业中发生回火时，应首先迅速关闭乙炔阀门，切断可燃气体来源，然后再关闭氧气阀门。这是防止火焰倒窜引起爆炸的关键步骤，所有焊工必须熟练掌握。",
+                regulation: "公司焊接安全操作规程明确规定了回火处理的正确步骤，操作人员必须经过培训并熟练掌握应急处理方法。"
+            },
+            {
+                type: "钣金制造",
+                text: "搬运大型钣金件时，以下哪种做法是正确的？",
+                options: [
+                    "单人搬运，锻炼体力",
+                    "两人或多人配合，统一指挥，使用合适的搬运工具",
+                    "将钣金件在地面上拖拽",
+                    "搬运时将钣金件扛在肩上"
+                ],
+                correct: 1,
+                explanation: "大型钣金件通常较重且边缘锋利，单人搬运容易造成砸伤或割伤。应两人或多人配合，使用叉车、起重机或专用搬运工具，并由一人统一指挥，确保协调一致。",
+                regulation: "公司物料搬运安全规定要求，搬运大型或重型物件时必须两人以上配合，并使用适当的搬运设备，防止人员伤害。"
+            },
+            {
+                type: "钣金制造",
+                text: "发现钣金件上有锋利的毛刺，应如何处理？",
+                options: [
+                    "忽略毛刺，直接进行下一步加工",
+                    "用砂纸或锉刀将毛刺打磨光滑",
+                    "用手将毛刺掰掉",
+                    "在毛刺处涂抹润滑油"
+                ],
+                correct: 1,
+                explanation: "钣金件上的锋利毛刺可能导致割伤，必须用砂纸或锉刀将其打磨光滑后再进行下一步操作或搬运。切勿用手直接掰掉毛刺，这可能导致手部受伤。",
+                regulation: "公司产品质量和安全管理规定要求，所有钣金件在流转前必须去除锋利毛刺，确保操作安全。"
+            },
+            {
+                type: "钣金制造",
+                text: "在使用砂轮机磨削钣金件时，砂轮突然破裂，应如何做？",
+                options: [
+                    "立即用手去接住碎片",
+                    "立即后退并关闭砂轮机电源",
+                    "继续使用剩余部分",
+                    "捡起碎片，重新安装砂轮"
+                ],
+                correct: 1,
+                explanation: "砂轮机砂轮破裂时，碎片可能高速飞出造成伤害，应立即后退到安全位置，并关闭电源。待设备完全停止后，再按照安全程序处理现场，切勿在设备运行时处理。",
+                regulation: "根据砂轮机安全操作规程，操作人员在砂轮破裂时应首先确保自身安全，立即停机，然后按照规定程序处理。"
+            },
+            {
+                type: "钣金制造",
+                text: "钣金喷漆作业时，以下哪项是必须的安全措施？",
+                options: [
+                    "在通风不良的封闭空间内进行，保证漆面质量",
+                    "佩戴防毒面具和防护手套",
+                    "可以吸烟提神",
+                    "穿着化纤衣物，防止静电"
+                ],
+                correct: 1,
+                explanation: "钣金喷漆作业中使用的油漆和稀释剂含有有害挥发物，必须佩戴合适的防毒面具防止吸入，同时佩戴防护手套防止皮肤接触。作业应在通风良好的区域进行，严禁吸烟和使用化纤衣物（易产生静电）。",
+                regulation: "公司涂装作业安全规定要求，喷漆作业人员必须佩戴有效的呼吸防护和手部防护用品，并在通风良好的环境中进行操作。"
+            },
+            {
+                type: "钣金制造",
+                text: "在进行钣金冲压作业时，以下哪种行为是不安全的？",
+                options: [
+                    "操作前检查模具安装是否牢固",
+                    "手脚同时操作控制按钮",
+                    "佩戴防护手套和防护眼镜",
+                    "保持工作区域整洁"
+                ],
+                correct: 1,
+                explanation: "冲压作业中，手脚同时操作控制按钮可能导致误操作，增加手部受伤风险。正确的操作方法是手离开危险区域后再启动设备，许多冲压设备都配备了双手启动装置以确保安全。",
+                regulation: "公司冲压设备安全操作规程严禁手脚同时操作控制装置，要求操作人员必须确认手部离开危险区域后再启动设备。"
+            },
+            {
+                type: "钣金制造",
+                text: "发现钣金焊接区域的消防器材过期，应立即？",
+                options: [
+                    "继续焊接作业，等用完再说",
+                    "立即报告管理人员更换合格的消防器材",
+                    "将过期的消防器材藏起来",
+                    "自己动手修理消防器材"
+                ],
+                correct: 1,
+                explanation: "焊接作业存在火灾风险，必须确保消防器材有效。发现消防器材过期应立即报告管理人员，更换合格的器材，在新的消防器材到位前，应暂停焊接作业。",
+                regulation: "公司消防安全管理规定要求，消防器材必须定期检查和更换，确保随时可用，发现过期或失效的消防器材必须立即报告并更换。"
+            },
+            
+            // 模具制造类
+            {
+                type: "模具制造",
+                text: "在模具装配过程中，需要将沉重的模仁安装到模架上，最安全的做法是？",
+                options: [
+                    "由两名工人合力抬举安装",
+                    "使用起重机或叉车配合安装",
+                    "在地面上滑动到位",
+                    "一人操作，其他人旁观"
+                ],
+                correct: 1,
+                explanation: "模仁通常较重，人工抬举容易造成腰部损伤或模仁滑落伤人。应使用起重机、叉车或专用吊装设备进行安装，确保安全。必要时使用导向装置辅助定位。",
+                regulation: "公司模具装配安全规程规定，安装重型模具部件必须使用适当的起重设备，严禁依靠人力抬举重型部件。"
+            },
+            {
+                type: "模具制造",
+                text: "模具电火花加工时，操作人员闻到刺鼻气味，应如何处理？",
+                options: [
+                    "继续操作，这是正常现象",
+                    "立即关闭电源，加强通风，检查原因",
+                    "佩戴口罩后继续工作",
+                    "往工作液中加水稀释"
+                ],
+                correct: 1,
+                explanation: "电火花加工时出现刺鼻气味可能是工作液分解或参数设置不当导致，可能释放有害气体。应立即关闭电源，开启通风设备，检查异常原因，确保安全后再继续操作。",
+                regulation: "根据公司特种加工安全规定，电火花加工时如出现异常气味或烟雾，应立即停机检查，排除故障并确保通风良好后方可继续。"
+            },
+            {
+                type: "模具制造",
+                text: "在模具调试过程中，模具突然合模异常，应首先采取什么措施？",
+                options: [
+                    "立即按下急停按钮，切断设备电源",
+                    "用工具撬开模具",
+                    "增加压力强行开模",
+                    "等待设备自动恢复"
+                ],
+                correct: 0,
+                explanation: "模具合模异常时，应立即按下急停按钮切断电源，防止模具或设备损坏加剧，同时避免人员受伤。然后检查异常原因，在确保安全的情况下进行处理。",
+                regulation: "公司模具调试安全规程要求，遇到任何异常情况应首先按下急停按钮，确保设备停止运行后再进行检查和处理。"
+            },
+            {
+                type: "模具制造",
+                text: "搬运模具时，以下哪项是必须的安全措施？",
+                options: [
+                    "模具上可以放置其他工具和零件",
+                    "使用专用吊具，确保模具平衡稳定",
+                    "快速移动，提高效率",
+                    "不需要清理模具上的油污"
+                ],
+                correct: 1,
+                explanation: "搬运模具必须使用专用吊具，确保模具平衡稳定，防止倾斜或坠落。模具上严禁放置其他物品，移动时应平稳缓慢，模具表面的油污应清理干净，防止滑倒。",
+                regulation: "公司模具搬运安全规定要求，搬运模具必须使用合适的吊具和设备，确保模具稳固，移动过程中应注意周围环境和人员安全。"
+            },
+            {
+                type: "模具制造",
+                text: "在模具抛光作业时，最容易发生的伤害是？",
+                options: [
+                    "触电伤害",
+                    "机械卷入和划伤",
+                    "高温烫伤",
+                    "化学腐蚀"
+                ],
+                correct: 1,
+                explanation: "模具抛光作业中，操作人员手持抛光工具接触模具表面，容易发生布料或手套被卷入，导致手部被划伤或卷入的风险。因此必须使用适当的防护用品，保持警惕。",
+                regulation: "公司模具抛光安全操作规程要求，操作人员必须佩戴防护手套，避免穿着宽松衣物，长发必须盘起并佩戴帽子，防止被卷入。"
+            },
+            {
+                type: "模具制造",
+                text: "发现模具型腔中有裂纹，应如何处理？",
+                options: [
+                    "继续使用，不影响生产即可",
+                    "用焊接方法修补后继续使用",
+                    "立即停止使用，标记并报告管理人员评估处理",
+                    "将裂纹处打磨光滑后继续使用"
+                ],
+                correct: 2,
+                explanation: "模具型腔出现裂纹可能导致模具在使用过程中突然破裂，造成设备损坏或人员伤害。应立即停止使用，做好标记并报告管理人员，由专业人员评估是否可以修复或需要报废。",
+                regulation: "公司模具维护管理规定要求，发现模具存在裂纹等严重缺陷时必须立即停用，并按规定程序进行评估和处理，严禁带病使用。"
+            },
+            {
+                type: "模具制造",
+                text: "在模具装配时，需要拧紧多个螺栓，正确的顺序是？",
+                options: [
+                    "从任意位置开始，依次拧紧",
+                    "从一端开始，依次向另一端拧紧",
+                    "按对角线顺序，分多次均匀拧紧",
+                    "先拧紧所有螺栓，再用力矩扳手加固"
+                ],
+                correct: 2,
+                explanation: "模具装配时拧紧螺栓应按对角线顺序，分多次均匀拧紧，这样可以确保模具各部分受力均匀，避免因受力不均导致模具变形或损坏。最终应使用力矩扳手按规定力矩拧紧。",
+                regulation: "公司模具装配工艺规范要求，螺栓紧固必须采用对角线顺序分阶段均匀拧紧，确保模具接合面贴合均匀，防止变形。"
+            },
+            {
+                type: "模具制造",
+                text: "在使用吊车吊装大型模具时，以下哪种行为是正确的？",
+                options: [
+                    "吊装过程中，人员可以在模具下方通过",
+                    "使用断裂强度足够的吊具，并检查是否牢固",
+                    "为节省时间，可以超载吊装",
+                    "吊装时可以用手推模具调整位置"
+                ],
+                correct: 1,
+                explanation: "吊装大型模具必须使用断裂强度足够的吊具，并在吊装前检查吊具是否牢固，模具是否平衡。吊装过程中，模具下方严禁站人或通行，不得超载吊装，不得用手直接接触吊装中的模具。",
+                regulation: "公司起重作业安全规程规定，吊装作业前必须检查吊具的安全性，确保负荷不超过额定值，吊装过程中严禁人员在吊物下方停留或通过。"
+            },
+            {
+                type: "模具制造",
+                text: "模具储存时，应采取的安全措施是？",
+                options: [
+                    "随意堆放在地面上，节省空间",
+                    "使用专用货架，按重量分层存放，标识清晰",
+                    "将模具叠放过高，提高存储效率",
+                    "模具型腔朝上放置，方便取用"
+                ],
+                correct: 1,
+                explanation: "模具储存应使用专用货架，按照模具重量分层存放，重的模具放在下层，轻的放在上层，并有清晰标识。这样可以防止模具倾倒伤人，同时便于管理和取用。",
+                regulation: "公司模具管理规定要求，模具必须存放在专用货架上，合理摆放，标识清晰，确保安全和易于管理。"
+            },
+            {
+                type: "模具制造",
+                text: "在模具维修过程中，需要拆卸紧配合的零件，正确的做法是？",
+                options: [
+                    "用锤子直接敲击零件",
+                    "使用合适的拆卸工具和辅助设备",
+                    "用火焰加热后强行拆卸",
+                    "多人用力拉扯"
+                ],
+                correct: 1,
+                explanation: "拆卸模具紧配合零件时，应使用合适的拆卸工具（如拔轮器、顶出器等）和辅助设备，避免损坏零件或模具。严禁用锤子直接敲击或强行拆卸，这可能导致零件损坏或人员受伤。",
+                regulation: "公司模具维修安全规程规定，拆卸紧配合零件必须使用专用工具，采取正确的拆卸方法，防止零件损坏和人员伤害。"
+            },
+            
+            // 通用安全类
+            {
+                type: "通用安全",
+                text: "发现同事在车间内发生触电事故，应首先采取什么措施？",
+                options: [
+                    "立即上去拉拽触电者",
+                    "立即切断电源或使用绝缘工具使触电者脱离电源",
+                    "立即拨打急救电话，等待医护人员",
+                    "立即寻找急救药品"
+                ],
+                correct: 1,
+                explanation: "发生触电事故时，首要任务是确保自身安全的前提下使触电者迅速脱离电源，可采取切断电源或使用绝缘工具（如干燥的木棍、竹竿）使触电者脱离电源。切勿直接用手接触触电者，以免自己也触电。",
+                regulation: "公司电气安全管理规定要求，所有员工必须掌握基本的触电急救知识，首先切断电源再进行施救。"
+            },
+            {
+                type: "通用安全",
+                text: "车间内发生火灾，哪种情况下可以使用水灭火？",
+                options: [
+                    "电气设备火灾",
+                    "油品火灾",
+                    "木材和纸张等固体物质火灾",
+                    "塑胶原料火灾"
+                ],
+                correct: 2,
+                explanation: "水适合扑救木材、纸张等固体物质火灾。电气设备火灾在未切断电源前不能用水扑救，以免触电；油品和塑胶火灾用水扑救可能导致火势蔓延，应使用干粉或二氧化碳灭火器。",
+                regulation: "公司消防安全管理规定要求，员工必须熟悉各类灭火器的使用范围和方法，根据火灾类型选择合适的灭火方式。"
+            },
+            {
+                type: "通用安全",
+                text: "以下哪种情况属于工伤事故，应立即报告？",
+                options: [
+                    "工作时间内在车间被设备划伤",
+                    "下班后在宿舍意外摔倒",
+                    "在家中处理私事时受伤",
+                    "休假期间外出旅游受伤"
+                ],
+                correct: 0,
+                explanation: "工作时间内在工作场所因工作原因受到的伤害属于工伤。员工在工作中受伤应立即报告管理人员，并按规定程序处理，以便及时救治和申报工伤。",
+                regulation: "公司工伤管理规定要求，员工在工作时间和工作场所内，因工作原因受到事故伤害的，应立即报告并接受治疗，公司将按规定办理工伤认定。"
+            },
+            {
+                type: "通用安全",
+                text: "在车间内行走时，应注意的安全事项是？",
+                options: [
+                    "可以在设备之间快速奔跑，提高效率",
+                    "沿指定通道行走，注意观察周围环境",
+                    "可以在叉车行驶路线上停留聊天",
+                    "低头看手机，不用注意周围情况"
+                ],
+                correct: 1,
+                explanation: "在车间内行走应沿指定通道，注意观察周围环境和设备运行情况，防止被移动设备碰撞或被地面障碍物绊倒。严禁在车间内奔跑、在危险区域停留或注意力不集中。",
+                regulation: "公司车间安全管理规定要求，员工在车间内行走必须遵守交通规则，沿指定通道行走，注意观察，确保自身和他人安全。"
+            },
+            {
+                type: "通用安全",
+                text: "发现车间内的消防通道被物料堵塞，应如何处理？",
+                options: [
+                    "只要留出一人通过的空间即可",
+                    "立即清理通道，确保畅通无阻",
+                    "等有空时再清理，不影响当前生产即可",
+                    "将物料堆得更整齐一些"
+                ],
+                correct: 1,
+                explanation: "消防通道是火灾等紧急情况下的生命通道，必须时刻保持畅通无阻，任何时候都不得堵塞。发现消防通道被堵塞，应立即清理，确保在紧急情况下人员能够迅速安全撤离。",
+                regulation: "公司消防安全管理规定严禁占用、堵塞消防通道，发现堵塞情况必须立即清理，确保通道畅通。"
+            },
+            {
+                type: "通用安全",
+                text: "使用手持电动工具时，以下哪项是必须的安全措施？",
+                options: [
+                    "使用两孔插头，方便插入插座",
+                    "检查工具是否有漏电现象，佩戴绝缘手套",
+                    "可以随意拖放电源线",
+                    "无需检查工具状态，直接使用"
+                ],
+                correct: 1,
+                explanation: "使用手持电动工具前必须检查是否有漏电现象，确保工具完好。操作时应佩戴绝缘手套，使用三孔插头确保接地良好，避免电源线被碾压或拖拽。",
+                regulation: "公司电气安全操作规程要求，使用手持电动工具前必须进行安全检查，确保绝缘良好，接地可靠，并佩戴适当的防护用品。"
+            },
+            {
+                type: "通用安全",
+                text: "在车间内进行高处作业（2米以上）时，必须采取的安全措施是？",
+                options: [
+                    "只要自己小心，不需要任何防护",
+                    "系好安全带，使用稳固的操作平台",
+                    "可以站在物料箱上作业",
+                    "快速完成作业，减少高处停留时间"
+                ],
+                correct: 1,
+                explanation: "高处作业存在坠落风险，必须系好安全带，并使用稳固的操作平台（如脚手架、梯子等）。严禁站在物料箱、包装等不稳固的物体上作业，无论作业时间长短都必须采取安全措施。",
+                regulation: "公司高处作业安全规定要求，凡在坠落高度基准面2米及以上有可能坠落的高处进行的作业，必须使用合格的安全防护用品和设备。"
+            },
+            {
+                type: "通用安全",
+                text: "化学品泄漏时，以下哪项应急处理措施是正确的？",
+                options: [
+                    "立即用手接触泄漏物，查看是什么物质",
+                    "立即撤离现场，不做任何处理",
+                    "佩戴适当的防护用品，采取正确的方法清理",
+                    "用水直接冲洗泄漏区域"
+                ],
+                correct: 2,
+                explanation: "化学品泄漏时，应首先佩戴适当的防护用品（如防护手套、护目镜、防毒面具等），根据化学品的性质采取正确的清理方法。不同化学品有不同的处理方式，应参考安全技术说明书(MSDS)。",
+                regulation: "公司化学品安全管理规定要求，处理化学品泄漏必须佩戴合适的防护用品，并按照应急处理程序和化学品特性进行处理，防止人员伤害和环境污染。"
+            },
+            {
+                type: "通用安全",
+                text: "以下哪种个人防护用品在操作旋转设备时不应佩戴？",
+                options: [
+                    "防护眼镜",
+                    "长发安全帽",
+                    "宽松的围巾或领带",
+                    "防护手套"
+                ],
+                correct: 2,
+                explanation: "操作旋转设备时，佩戴宽松的围巾或领带可能被卷入设备，导致严重伤害。应穿着合身的工作服，长发必须盘入安全帽内，避免佩戴任何可能被卷入的饰品。",
+                regulation: "公司设备安全操作规程规定，操作旋转设备时严禁佩戴可能被卷入的宽松衣物或饰品，确保着装符合安全要求。"
+            },
+            {
+                type: "通用安全",
+                text: "发生火灾时，如果你被困在车间内，无法立即撤离，应如何做？",
+                options: [
+                    "破窗跳楼逃生",
+                    "躲在车间角落，等待救援",
+                    "到有新鲜空气且易被发现的地方，发出求救信号",
+                    "打开所有门窗，希望获得更多空气"
+                ],
+                correct: 2,
+                explanation: "火灾被困时，应选择有新鲜空气、相对安全且易被救援人员发现的地方，如靠近窗户的位置，同时发出明显的求救信号，如挥动鲜艳衣物、敲击物体等。切勿盲目跳楼或打开所有门窗（可能加速火势蔓延）。",
+                regulation: "公司火灾应急预案要求，员工应熟悉车间疏散路线和应急避难方法，被困时应采取正确措施等待救援。"
+            },
+            
+            // 更多题目，确保题库总量达到50题
+            {
+                type: "塑胶制造",
+                text: "在塑胶注塑过程中，发现原料中混入金属杂质，应采取什么措施？",
+                options: [
+                    "忽略杂质，继续生产",
+                    "立即停止生产，清理原料和料筒",
+                    "将含有杂质的原料挑出后继续使用",
+                    "增加注塑压力，强行将杂质射出"
+                ],
+                correct: 1,
+                explanation: "原料中的金属杂质可能损坏注塑机螺杆、喷嘴或模具，必须立即停止生产，彻底清理原料和料筒，防止设备损坏。应检查原料来源，防止类似情况再次发生。",
+                regulation: "公司原料质量控制规定要求，发现原料中混入杂质应立即停止生产，清理设备，确保产品质量和设备安全。"
+            },
+            {
+                type: "塑胶制造",
+                text: "热塑性塑料加热过度导致分解，应如何处理？",
+                options: [
+                    "继续生产，加快速度完成批次",
+                    "立即降低温度，清理料筒",
+                    "添加新料稀释分解的塑料",
+                    "提高注射速度，减少塑料在料筒内的停留时间"
+                ],
+                correct: 1,
+                explanation: "热塑性塑料加热过度分解会影响产品质量，产生有害气体，并可能损坏设备。应立即降低温度，停止生产，彻底清理料筒，消除分解物后再重新开始生产。",
+                regulation: "公司塑胶成型工艺规范要求，操作人员应监控物料温度，发现分解迹象立即采取措施，防止产品报废和设备损坏。"
+            },
+            {
+                type: "钣金制造",
+                text: "在钣金件酸洗处理过程中，皮肤不慎接触到酸液，应立即？",
+                options: [
+                    "用干布擦拭后继续工作",
+                    "立即用大量清水冲洗接触部位至少15分钟",
+                    "涂抹油脂中和酸液",
+                    "用碱水冲洗中和"
+                ],
+                correct: 1,
+                explanation: "皮肤接触酸液后，应立即用大量清水持续冲洗至少15分钟，这是防止化学灼伤的关键步骤。切勿使用碱水直接中和，可能产生放热反应加重伤害。冲洗后应根据情况就医。",
+                regulation: "公司化学品安全管理规定要求，处理酸碱等腐蚀性物质时必须佩戴防护用品，一旦接触应立即用大量清水冲洗。"
+            },
+            {
+                type: "钣金制造",
+                text: "使用激光切割机床时，以下哪项是必须的安全措施？",
+                options: [
+                    "佩戴激光防护眼镜，确保工作区域通风",
+                    "可以在设备运行时打开防护罩观察",
+                    "将易燃物品放在机床附近",
+                    "无需培训即可操作"
+                ],
+                correct: 0,
+                explanation: "激光切割会产生强光和有害气体，必须佩戴专用激光防护眼镜保护眼睛，确保工作区域通风良好以排除有害气体。严禁在设备运行时打开防护罩，操作人员必须经过专门培训。",
+                regulation: "公司激光设备安全操作规程要求，操作人员必须佩戴适当的防护用品，确保通风系统正常运行，严禁在设备运行时打开防护罩。"
+            },
+            {
+                type: "模具制造",
+                text: "模具加工过程中，测量工具不慎掉入正在运行的机床内，应如何处理？",
+                options: [
+                    "立即伸手去取出测量工具",
+                    "立即按下急停按钮，待机床停止后取出",
+                    "继续操作，等加工完成后再取出",
+                    "用另一个工具试图勾出测量工具"
+                ],
+                correct: 1,
+                explanation: "测量工具掉入运行中的机床内，可能损坏设备或造成危险，应立即按下急停按钮，待机床完全停止后再安全取出。切勿在机床运行时试图取出，以免造成人员伤害。",
+                regulation: "公司机床操作安全规程规定，当异物掉入运行中的机床时，必须立即停机，待设备完全停止后再进行处理。"
+            },
+            {
+                type: "模具制造",
+                text: "在模具表面进行氮化处理后，取用时应注意什么？",
+                options: [
+                    "可以直接用手取拿，氮化层不烫手",
+                    "必须佩戴隔热手套，防止高温烫伤",
+                    "用湿布包裹后取拿",
+                    "冷却后无需防护即可取拿"
+                ],
+                correct: 1,
+                explanation: "模具氮化处理后温度很高，必须佩戴隔热手套取拿，防止高温烫伤。即使冷却一段时间，也应先确认温度是否安全，再进行操作。",
+                regulation: "公司热处理安全操作规程要求，处理高温工件必须使用专用工具和隔热防护用品，防止高温烫伤。"
+            },
+            {
+                type: "通用安全",
+                text: "车间内的应急照明在什么情况下应自动启动？",
+                options: [
+                    "正常生产时",
+                    "发生火灾或停电时",
+                    "设备维护时",
+                    "下班之后"
+                ],
+                correct: 1,
+                explanation: "应急照明设计用于在正常照明系统失效时（如火灾或停电）提供照明，确保人员安全疏散和应急处理。应急照明应定期检查，确保在紧急情况下能自动启动。",
+                regulation: "公司消防安全管理规定要求，应急照明系统必须保持完好，在断电或火灾情况下能自动启动，确保疏散通道和重要区域的照明。"
+            },
+            {
+                type: "通用安全",
+                text: "发现同事在工作中酒后上岗，应如何处理？",
+                options: [
+                    "不予理会，这是个人问题",
+                    "立即报告管理人员，阻止其操作设备",
+                    "帮助隐瞒，让其完成工作后离开",
+                    "劝其少喝点，不影响工作即可"
+                ],
+                correct: 1,
+                explanation: "酒后上岗存在严重安全隐患，可能导致操作失误引发事故。发现同事酒后上岗应立即报告管理人员，阻止其操作任何设备，确保工作场所安全。",
+                regulation: "公司安全生产管理规定严禁酒后上岗，发现酒后上岗人员应立即停止其工作，并报告管理人员按规定处理。"
+            },
+            {
+                type: "塑胶制造",
+                text: "在塑胶制品检验过程中，发现产品存在飞边，应如何处理？",
+                options: [
+                    "直接出厂，不影响使用",
+                    "用手直接撕掉飞边",
+                    "使用专用工具去除飞边，检查原因",
+                    "将有飞边的产品堆放起来，批量处理"
+                ],
+                correct: 2,
+                explanation: "塑胶制品的飞边可能导致割伤，应使用专用工具（如美工刀、锉刀等）去除，并检查产生飞边的原因（如模具、工艺参数等），采取措施防止再次发生。切勿用手直接撕扯飞边，以免受伤。",
+                regulation: "公司产品质量检验规范要求，带有飞边等缺陷的产品必须经过处理合格后方可出厂，同时应分析原因并采取纠正措施。"
+            },
+            {
+                type: "钣金制造",
+                text: "在钣金件装配过程中，需要使用扳手拧紧螺栓，以下哪种做法是正确的？",
+                options: [
+                    "使用过大的扳手，用锤子敲击扳手增加力矩",
+                    "选择合适尺寸的扳手，均匀用力",
+                    "戴手套使用扳手，增加摩擦力",
+                    "可以站在扳手上增加力量"
+                ],
+                correct: 1,
+                explanation: "使用扳手时应选择合适尺寸的工具，均匀用力拧紧螺栓。使用过大的扳手或用锤子敲击可能导致螺栓或工具损坏，甚至造成人员受伤。戴手套使用扳手可能导致打滑，站在扳手上更是危险行为。",
+                regulation: "公司工具安全使用规定要求，必须使用合适的工具进行操作，严禁采取可能导致工具损坏或人员伤害的操作方式。"
+            }
+        ];
+
+        // 游戏状态变量
+        let currentQuestionIndex = 0;
+        let selectedQuestions = [];
+        let score = 0;
+        let correctAnswers = 0;
+        let gameStartTime = 0;
+        let totalGameTime = 0;
+        let questionTimer = null;
+        let remainingTime = 30;
+        
+        // DOM元素
+        const userInfoScreen = document.getElementById('user-info-screen');
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const endScreen = document.getElementById('end-screen');
+        const userInfoForm = document.getElementById('user-info-form');
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const viewRankingBtn = document.getElementById('view-ranking-btn');
+        const rankingBtn = document.getElementById('ranking-btn');
+        const rankingModal = document.getElementById('ranking-modal');
+        const closeRanking = document.getElementById('close-ranking');
+        const helpBtn = document.getElementById('help-btn');
+        const helpModal = document.getElementById('help-modal');
+        const closeHelp = document.getElementById('close-help');
+        const understandBtn = document.getElementById('understand-btn');
+        const exportRecordsBtn = document.getElementById('export-records-btn');
+        
+        // 初始化游戏
+        function initGame() {
+            // 初始化游戏记录
+            initializeGameRecords();
+            
+            // 事件监听
+            userInfoForm.addEventListener('submit', handleUserInfoSubmit);
+            startBtn.addEventListener('click', startGame);
+            nextBtn.addEventListener('click', loadNextQuestion);
+            restartBtn.addEventListener('click', restartGame);
+            viewRankingBtn.addEventListener('click', showRanking);
+            rankingBtn.addEventListener('click', () => rankingModal.classList.remove('hidden'));
+            closeRanking.addEventListener('click', () => rankingModal.classList.add('hidden'));
+            helpBtn.addEventListener('click', () => helpModal.classList.remove('hidden'));
+            closeHelp.addEventListener('click', () => helpModal.classList.add('hidden'));
+            understandBtn.addEventListener('click', () => helpModal.classList.add('hidden'));
+            exportRecordsBtn.addEventListener('click', exportGameRecords);
+            
+            // 初始显示排行榜
+            updateRanking();
+        }
+        
+        // 处理用户信息提交
+        function handleUserInfoSubmit(e) {
+            e.preventDefault();
+            userInfo.department = document.getElementById('department').value;
+            userInfo.employeeId = document.getElementById('employee-id').value;
+            userInfo.name = document.getElementById('name').value;
+            
+            userInfoScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+        
+        // 开始游戏
+        function startGame() {
+            startScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            
+            // 随机选择10道题
+            selectedQuestions = [];
+            const shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+            selectedQuestions = shuffledQuestions.slice(0, 10);
+            
+            currentQuestionIndex = 0;
+            score = 0;
+            correctAnswers = 0;
+            
+            // 记录游戏开始时间
+            gameStartTime = new Date().getTime();
+            
+            // 更新UI
+            document.getElementById('score').textContent = score;
+            updateProgress();
+            
+            // 加载第一题
+            loadQuestion(0);
+        }
+        
+        // 加载指定题目
+        function loadQuestion(index) {
+            if (index >= selectedQuestions.length) {
+                endGame();
+                return;
+            }
+            
+            const question = selectedQuestions[index];
+            document.getElementById('question-type').textContent = question.type;
+            document.getElementById('question-text').textContent = question.text;
+            
+            // 清空并加载选项
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, i) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option card-hover border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-primary transition-colors';
+                optionDiv.innerHTML = `
+                    <div class="flex items-start">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex-shrink-0 mt-0.5 mr-3 flex items-center justify-center option-marker">
+                            <span class="option-letter font-bold">${String.fromCharCode(65 + i)}</span>
+                        </div>
+                        <p>${option}</p>
+                    </div>
+                `;
+                optionDiv.dataset.index = i;
+                optionDiv.addEventListener('click', handleOptionSelect);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // 重置解析和下一题按钮
+            document.getElementById('explanation-container').classList.add('hidden');
+            document.getElementById('next-btn-container').classList.add('hidden');
+            
+            // 启动30秒计时器
+            startQuestionTimer();
+        }
+        
+        // 开始题目计时器
+        function startQuestionTimer() {
+            // 清除之前的计时器
+            if (questionTimer) {
+                clearInterval(questionTimer);
+            }
+            
+            remainingTime = 30;
+            const timerElement = document.getElementById('question-timer');
+            timerElement.textContent = remainingTime;
+            timerElement.parentElement.classList.remove('timer-warning');
+            
+            questionTimer = setInterval(() => {
+                remainingTime--;
+                timerElement.textContent = remainingTime;
+                
+                // 时间少于10秒时添加警告效果
+                if (remainingTime <= 10) {
+                    timerElement.parentElement.classList.add('timer-warning');
+                }
+                
+                // 时间到，自动判定为错误
+                if (remainingTime <= 0) {
+                    clearInterval(questionTimer);
+                    handleTimeOut();
+                }
+            }, 1000);
+        }
+        
+        // 处理超时
+        function handleTimeOut() {
+            // 显示正确答案
+            const correctOption = document.querySelector(`.option[data-index="${selectedQuestions[currentQuestionIndex].correct}"]`);
+            highlightOption(correctOption, true);
+            
+            // 显示解析
+            showExplanation();
+            
+            // 显示下一题按钮
+            document.getElementById('next-btn-container').classList.remove('hidden');
+        }
+        
+        // 处理选项选择
+        function handleOptionSelect() {
+            // 停止计时器
+            clearInterval(questionTimer);
+            
+            const selectedIndex = parseInt(this.dataset.index);
+            const correctIndex = selectedQuestions[currentQuestionIndex].correct;
+            const isCorrect = selectedIndex === correctIndex;
+            
+            // 高亮选中的选项
+            highlightOption(this, isCorrect);
+            
+            // 如果选错了，同时高亮正确选项
+            if (!isCorrect) {
+                const correctOption = document.querySelector(`.option[data-index="${correctIndex}"]`);
+                highlightOption(correctOption, true);
+            } else {
+                // 答对了，加分
+                score += 10;
+                correctAnswers++;
+                document.getElementById('score').textContent = score;
+            }
+            
+            // 显示解析
+            showExplanation();
+            
+            // 显示下一题按钮
+            document.getElementById('next-btn-container').classList.remove('hidden');
+        }
+        
+        // 高亮选项
+        function highlightOption(optionElement, isCorrect) {
+            // 移除所有选项的点击事件
+            document.querySelectorAll('.option').forEach(option => {
+                option.removeEventListener('click', handleOptionSelect);
+                option.classList.remove('cursor-pointer', 'hover:border-primary');
+            });
+            
+            // 添加高亮样式
+            if (isCorrect) {
+                optionElement.classList.add('border-success', 'bg-success/5');
+                optionElement.querySelector('.option-marker').classList.add('border-success', 'bg-success', 'text-white');
+            } else {
+                optionElement.classList.add('border-danger', 'bg-danger/5');
+                optionElement.querySelector('.option-marker').classList.add('border-danger', 'bg-danger', 'text-white');
+            }
+        }
+        
+        // 显示解析
+        function showExplanation() {
+            const explanationContainer = document.getElementById('explanation-container');
+            const explanationText = document.getElementById('explanation-text');
+            const question = selectedQuestions[currentQuestionIndex];
+            
+            explanationText.innerHTML = `
+                ${question.explanation}
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <h4 class="font-bold text-secondary mb-2">相关安全规定：</h4>
+                    <p class="text-gray-700 text-sm">${question.regulation}</p>
+                </div>
+            `;
+            
+            explanationContainer.classList.remove('hidden');
+        }
+        
+        // 加载下一题
+        function loadNextQuestion() {
+            currentQuestionIndex++;
+            updateProgress();
+            loadQuestion(currentQuestionIndex);
+        }
+        
+        // 更新进度
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / selectedQuestions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('progress-text').textContent = `${currentQuestionIndex + 1}/${selectedQuestions.length}`;
+        }
+        
+        // 结束游戏
+        function endGame() {
+            // 计算总游戏时间（秒）
+            const endTime = new Date().getTime();
+            totalGameTime = Math.floor((endTime - gameStartTime) / 1000);
+            
+            gameScreen.classList.add('hidden');
+            endScreen.classList.remove('hidden');
+            
+            // 更新结束界面数据
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('correct-answers').textContent = correctAnswers;
+            document.getElementById('total-time').textContent = formatTime(totalGameTime);
+            
+            // 确定评级
+            let rating, message, iconClass;
+            if (score === 100) {
+                rating = "优秀";
+                message = "恭喜您获得满分！您对制造车间的应急知识掌握非常全面，是大家学习的榜样。请继续保持这种安全意识，为公司的安全生产贡献力量。";
+                iconClass = "fa-trophy";
+            } else if (score >= 80) {
+                rating = "良好";
+                message = "您对制造车间的应急知识有较好的掌握，但仍有提升空间。建议回顾错题，重点关注相关知识点，进一步提高应急处理能力。";
+                iconClass = "fa-star";
+            } else if (score >= 60) {
+                rating = "合格";
+                message = "您对制造车间的应急知识有基本了解，但还需加强学习。建议重点关注常见应急场景的处理流程，提高安全操作意识。";
+                iconClass = "fa-check-circle";
+            } else {
+                rating = "待提高";
+                message = "您对制造车间的应急知识掌握不足，存在安全风险。建议系统学习公司安全操作规程和应急处理流程，参加相关培训，提高安全意识。";
+                iconClass = "fa-exclamation-triangle";
+            }
+            
+            document.getElementById('result-rating').textContent = rating;
+            document.getElementById('result-message').textContent = message;
+            document.getElementById('result-icon').innerHTML = `<i class="fa ${iconClass} text-white text-4xl"></i>`;
+            
+            // 根据得分设置结果图标颜色
+            const resultIcon = document.getElementById('result-icon');
+            resultIcon.className = score === 100 ? 
+                "w-24 h-24 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6" : 
+                score >= 80 ? 
+                "w-24 h-24 bg-success rounded-full flex items-center justify-center mx-auto mb-6" : 
+                score >= 60 ? 
+                "w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6" : 
+                "w-24 h-24 bg-danger rounded-full flex items-center justify-center mx-auto mb-6";
+            
+            // 添加新记录
+            addNewRecord(score, totalGameTime);
+        }
+        
+        // 格式化时间（秒 -> MM:SS）
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+        
+        // 重新开始游戏
+        function restartGame() {
+            endScreen.classList.add('hidden');
+            startGame();
+        }
+        
+        // 显示排行榜
+        function showRanking() {
+            updateRanking();
+            rankingModal.classList.remove('hidden');
+        }
+        
+        // 更新排行榜
+        function updateRanking() {
+            // 对记录进行排序：先按分数降序，分数相同则按时间升序
+            const sortedRecords = [...gameRecords].sort((a, b) => {
+                if (b.score !== a.score) {
+                    return b.score - a.score;
+                }
+                return a.time - b.time;
+            });
+            
+            // 更新主界面排行榜
+            const rankingList = document.getElementById('ranking-list');
+            rankingList.innerHTML = '';
+            
+            // 更新模态框排行榜
+            const modalRankingList = document.getElementById('modal-ranking-list');
+            modalRankingList.innerHTML = '';
+            
+            // 只显示前20名
+            const topRecords = sortedRecords.slice(0, 20);
+            
+            topRecords.forEach((record, index) => {
+                // 创建主界面排行榜项
+                const row = document.createElement('tr');
+                row.className = index < 3 ? `rank-${index + 1}` : '';
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <span class="font-medium text-gray-900">${index + 1}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${record.name}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${record.department}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-secondary">${record.score}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${formatTime(record.time)}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${record.date}
+                    </td>
+                `;
+                rankingList.appendChild(row);
+                
+                // 创建模态框排行榜项
+                const modalRow = document.createElement('tr');
+                modalRow.className = index < 3 ? `rank-${index + 1}` : '';
+                modalRow.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <span class="font-medium text-gray-900">${index + 1}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${record.name}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${record.department}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-secondary">${record.score}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${formatTime(record.time)}</div>
+                    </td>
+                `;
+                modalRankingList.appendChild(modalRow);
+            });
+        }
+        
+        // 导出游戏记录
+        function exportGameRecords() {
+            // 准备CSV内容
+            let csvContent = "排名,姓名,部门,工号,得分,用时(秒),日期\n";
+            
+            // 对记录进行排序
+            const sortedRecords = [...gameRecords].sort((a, b) => {
+                if (b.score !== a.score) {
+                    return b.score - a.score;
+                }
+                return a.time - b.time;
+            });
+            
+            sortedRecords.forEach((record, index) => {
+                csvContent += `${index + 1},${record.name},${record.department},${record.employeeId || ''},${record.score},${record.time},${record.date}\n`;
+            });
+            
+            // 创建下载链接
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            
+            // 文件名包含当前日期
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+            link.setAttribute('download', `海信模具应急知识挑战赛记录_${dateStr}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // 页面加载完成后初始化游戏
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>
+    
